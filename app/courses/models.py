@@ -17,8 +17,9 @@ class Subject(models.Model):
 
 
 class Course(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='courses_created')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='courses')
+    student = models.ManyToManyField(User, related_name='courses_joined', blank=True)
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
     overview = models.TextField()
@@ -32,7 +33,7 @@ class Course(models.Model):
 
 
 class Module(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='modules')
     title = models.CharField(max_length=100)
     description = models.TextField()
     order = OrderField(blank=True, for_fields=['course'])
