@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import (
 from django.db.models import Count
 from django.apps import apps
 from django.views.generic import DetailView
-
+from students.forms import CourseEnrollForm
 from .models import Course, Module, Content, Subject
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
@@ -197,3 +197,10 @@ class CourseListView(TemplateResponseMixin, View):
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['enroll_form'] = CourseEnrollForm(
+            initial={'course': self.object}
+        )
+        return context
