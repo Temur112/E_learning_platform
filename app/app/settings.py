@@ -17,10 +17,22 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = ['127.0.0.1']
+
+# Caching
+CACHES = {
+    'default': {
+        # 'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+    }
+}
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'debug_toolbar',
     'courses',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -29,17 +41,28 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'students.apps.StudentsConfig',
+    'embed_video',
+    'redisboard',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Caching settings
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 60 * 15 # 15 minutes
+CACHE_MIDDLEWARE_KEY_PREFIX = 'app'
+
 
 ROOT_URLCONF = 'app.urls'
 
