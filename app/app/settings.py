@@ -28,6 +28,14 @@ CACHES = {
     }
 }
 
+# Rest framework settings
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ]
+}
+
 
 # Application definition
 
@@ -43,6 +51,7 @@ INSTALLED_APPS = [
     'students.apps.StudentsConfig',
     'embed_video',
     'redisboard',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
